@@ -1,0 +1,16 @@
+:root {
+    --greycolor: #242424;
+    --whitecolor: #ffffff;
+}
+
+* {
+    text-align: center;
+    color: var(--whitecolor);
+}
+
+body {
+    padding: 2rem 9rem;
+    background-color: var(--greycolor);
+}
+
+footer {}
