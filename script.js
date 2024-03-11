@@ -2,7 +2,7 @@ let countryInfoHTML = document.querySelector(".country_info");
 const apiKey = '9R71T0IVMR0C';
 
 const obtenerZonasHorarias = async () => {
-    const url = `http://api.timezonedb.com/v2.1/list-time-zone?key=${apiKey}&format=json`;
+    const url = `https://api.timezonedb.com/v2.1/list-time-zone?key=${apiKey}&format=json`;
 
     try {
         const response = await fetch(url);
