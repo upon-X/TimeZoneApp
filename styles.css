@@ -10,5 +10,75 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
     background-color: var(--greycolor);
+    background-image: url("assets/bg-planisferio.webp");
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+footer {
+    padding: 2rem;
+}
+
+.country_info {
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+.every_country_time {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.country_time {
+    background-color: #443e47;
+    padding: 0.2rem;
+    border-radius: 5px;
+}
+
+.order_container {
+    display: flex;
+    gap: 2rem;
+}
+
+.ordenar_btn {
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid grey;
+    padding: 0.5rem;
+    transition: 0.15s;
+}
+
+.ordenar_btn:hover {
+    background-color: grey;
+    font-weight: 700;
+}
+
+@media (max-width: 1699px) {
+    .country_info {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1199px) {
+    .country_info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 899px) {
+    .country_info {
+        grid-template-columns: 1fr;
+    }
 }

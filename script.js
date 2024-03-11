@@ -1,28 +1,31 @@
 let countryInfoHTML = document.querySelector(".country_info");
-
-const apiKey = '9R71T0IVMR0C';  // Reemplaza con tu clave API de TimeZoneDb
+const apiKey = '9R71T0IVMR0C';
 
 const obtenerZonasHorarias = async () => {
     const url = `http://api.timezonedb.com/v2.1/list-time-zone?key=${apiKey}&format=json`;
+
     try {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
             let countryInfoText = "";
-            for (let i = 0; i < 100; i++) {
+            let paisesAgregados = [];
+
+            for (let i = 0; i < 350; i++) {
                 let name = data.zones[i].countryName;
                 let timestamp = data.zones[i].timestamp;
-                // Crear un objeto Date con el timestamp
-                let date = new Date(timestamp * 1000);  // Multiplicar por 1000 para convertir segundos a milisegundos
-                // Obtener hora, minuto y segundo
-                let hours = date.getHours().toString().padStart(2, '0');
-                let minutes = date.getMinutes().toString().padStart(2, '0');
-                // let seconds = date.getSeconds().toString().padStart(2, '0');
-                // Acumular la información del país
-                countryInfoText += `<h3>${name}, ${hours}:${minutes}</h3>`;
+                let countryCode = data.zones[i].countryCode;
+
+                if (!paisesAgregados.includes(countryCode)) {
+                    let date = new Date(timestamp * 1000);  // Convierte el timestamp a milisegundos
+                    date.setHours(date.getHours() + 3);  // Ajusta la hora según la diferencia de 3 horas
+                    let hours = date.getHours().toString().padStart(2, '0');
+                    let minutes = date.getMinutes().toString().padStart(2, '0');
+                    countryInfoText += `<h3 class="every_country_time"><img alt="flag" src="https://flagsapi.com/${countryCode}/flat/32.png">${name}<span class="country_time">${hours}:${minutes}</span></h3>`;
+                    paisesAgregados.push(countryCode);
+                }
             }
 
-            // Asignar la información acumulada a los elementos HTML
             countryInfoHTML.innerHTML = countryInfoText;
         } else {
             console.error(`Error en la solicitud. Código de estado: ${response.status}`);
@@ -31,18 +34,45 @@ const obtenerZonasHorarias = async () => {
         console.error(`Error de conexión: ${error}`);
     }
 };
+
+const ordenarAZ = () => {
+    // Obtener todos los elementos de tiempo de los países
+    const elementosTiempo = document.querySelectorAll('.every_country_time');
+
+    // Convertir a un array y ordenar alfabéticamente
+    const elementosOrdenados = Array.from(elementosTiempo).sort((a, b) => {
+        const paisA = a.textContent.toLowerCase();
+        const paisB = b.textContent.toLowerCase();
+        return paisA.localeCompare(paisB);
+    });
+
+    // Actualizar la lista con los elementos ordenados
+    countryInfoHTML.innerHTML = '';
+    elementosOrdenados.forEach((elemento) => {
+        countryInfoHTML.appendChild(elemento);
+    });
+};
+
+const ordenarZA = () => {
+    // Obtener todos los elementos de tiempo de los países
+    const elementosTiempo = document.querySelectorAll('.every_country_time');
+
+    // Convertir a un array y ordenar alfabéticamente en orden inverso
+    const elementosOrdenados = Array.from(elementosTiempo).sort((a, b) => {
+        const paisA = a.textContent.toLowerCase();
+        const paisB = b.textContent.toLowerCase();
+        return paisB.localeCompare(paisA);
+    });
+
+    // Actualizar la lista con los elementos ordenados
+    countryInfoHTML.innerHTML = '';
+    elementosOrdenados.forEach((elemento) => {
+        countryInfoHTML.appendChild(elemento);
+    });
+};
+
+document.getElementById('ordenAZ').addEventListener('click', ordenarAZ);
+document.getElementById('ordenZA').addEventListener('click', ordenarZA);
+
 obtenerZonasHorarias();
 setInterval(obtenerZonasHorarias, 60000);
-
-
-async function obtenerTiempoPais(country) {
-    const url = `http://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=zone&zone=America/Chicago`
-    try {
-        const response = await fetch(url)
-        if (response.ok) {
-            let countrySearch = await response.json()
-        }
-    } catch (error) {
-        console.error(error)
-    }
-}
