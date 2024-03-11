@@ -10,8 +10,5 @@
 }
 
 body {
-    padding: 2rem 9rem;
     background-color: var(--greycolor);
 }
-
-footer {}
